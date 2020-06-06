@@ -25,3 +25,19 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Vacancy(models.Model):
+    title = models.CharField('Vacancy title', max_length=250)
+    company = models.CharField('Vacancy company', max_length=250)
+    description = models.TextField('Vacancy description')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Vacancy city')
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, verbose_name='Vacancy language')
+    url = models.URLField('Vacancy url')
+
+    class Meta:
+        verbose_name = 'Vacancy'
+        verbose_name_plural = 'Vacancies'
+
+    def __str__(self):
+        return self.title

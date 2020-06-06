@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import City, Language
+from .models import City, Language, Vacancy
 
 
 # Register your models here.
@@ -13,6 +13,11 @@ class CityAdmin(admin.ModelAdmin):
 @admin.register(Language)
 class LanguageAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # auto generate slug for Language
+
+
+@admin.register(Vacancy)
+class VacancyAdmin(admin.ModelAdmin):
+    pass
 
 
 admin.site.site_title = "Jobs scraper"
