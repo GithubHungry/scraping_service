@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+Vacancies
+{% endblock title %}
+
+
+{% block content %}
+    {% for vacancy in object_list %}
+        <p><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></p>
+        <p>{{ vacancy.description }}</p>
+
+    {% empty %}
+        <p>Sorry, no vacancies in this list.</p>
+
+    {% endfor %}
+{% endblock content %}

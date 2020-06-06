@@ -33,7 +33,8 @@ class Vacancy(models.Model):
     description = models.TextField('Vacancy description')
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Vacancy city')
     language = models.ForeignKey(Language, on_delete=models.CASCADE, verbose_name='Vacancy language')
-    url = models.URLField('Vacancy url')
+    timestamp = models.DateField(auto_now_add=True)
+    url = models.URLField('Vacancy url', unique=True)
 
     class Meta:
         verbose_name = 'Vacancy'
