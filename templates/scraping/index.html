@@ -6,8 +6,17 @@ Vacancies
 
 {% block content %}
     {% for vacancy in object_list %}
-        <p><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></p>
-        <p>{{ vacancy.description }}</p>
+
+     <div class="card my-3">
+         <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
+         <div class="card-body">
+            <h5 class="card-title">{{ vacancy.title }}</h5>
+            <p class="card-text"><p>{{ vacancy.description }}</p></p>
+             <p>{{ vacancy.city.name }} | {{ vacancy.language.name }}</p>
+             <p>{{ vacancy.timestamp |date:'D d M Y'}}</p>
+            <a href="{{ vacancy.url }}" class="btn btn-primary">Go to the site</a>
+        </div>
+    </div>
 
     {% empty %}
         <p>Sorry, no vacancies in this list.</p>
