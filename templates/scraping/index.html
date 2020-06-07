@@ -1,25 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}
-Vacancies
+    Vacancies
 {% endblock title %}
 
 
 {% block content %}
-    {% for vacancy in object_list %}
 
-     <div class="card my-3">
-         <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
-         <div class="card-body">
-            <h5 class="card-title">{{ vacancy.title }}</h5>
-            <p class="card-text"><p>{{ vacancy.description }}</p></p>
-             <p>{{ vacancy.city.name }} | {{ vacancy.language.name }}</p>
-             <p>{{ vacancy.timestamp |date:'D d M Y'}}</p>
-            <a href="{{ vacancy.url }}" class="btn btn-primary">Go to the site</a>
+    <div class="row ">
+    <div class="col-md-6 mx-auto">
+    <form action="" method="get">
+        <div class="form-group">
+            {{ form.as_p }}
         </div>
+        <button type="submit" class="btn btn-primary">Search!</button>
+    </form>
+    </div>
     </div>
 
-    {% empty %}
-        <p>Sorry, no vacancies in this list.</p>
+    {% for vacancy in object_list %}
 
+
+
+        <div class="card my-3">
+            <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
+            <div class="card-body">
+                <h5 class="card-title">{{ vacancy.title }}</h5>
+                <p class="card-text">
+                <p>{{ vacancy.description }}</p>
+                <p>{{ vacancy.city.name }} | {{ vacancy.language.name }}</p>
+                <p>{{ vacancy.timestamp |date:'D d M Y' }}</p>
+                <a href="{{ vacancy.url }}" class="btn btn-primary">Go to the site</a>
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="mx-auto">
+            <h3>There are no actual vacancies here.</h3>
+        </div>
     {% endfor %}
+
 {% endblock content %}
