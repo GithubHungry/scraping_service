@@ -7,24 +7,22 @@
 {% block content %}
 
     <div class="row ">
-    <div class="col-md-6 mx-auto">
-    <form action="" method="get">
-        <div class="form-group">
-            {{ form.as_p }}
+        <div class="col-md-6 mx-auto">
+            <form action="" method="get">
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Search!</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Search!</button>
-    </form>
-    </div>
     </div>
 
     {% for vacancy in object_list %}
 
-
-
         <div class="card my-3">
-            <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
+            <h3 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h3>
             <div class="card-body">
-                <h5 class="card-title">{{ vacancy.title }}</h5>
+                <h3 class="card-title">{{ vacancy.company }}</h3>
                 <p class="card-text">
                 <p>{{ vacancy.description }}</p>
                 <p>{{ vacancy.city.name }} | {{ vacancy.language.name }}</p>
@@ -34,9 +32,7 @@
         </div>
 
     {% empty %}
-        <div class="mx-auto">
-            <h3>There are no actual vacancies here.</h3>
-        </div>
+            <h3 class="my-4 text-center">There are no actual vacancies here.</h3>
     {% endfor %}
 
 {% endblock content %}
