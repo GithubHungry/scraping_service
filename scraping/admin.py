@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import City, Language, Vacancy
+from .models import City, Language, Vacancy, Url
 
 
 # Register your models here.
@@ -17,6 +17,11 @@ class LanguageAdmin(admin.ModelAdmin):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Url)
+class UrlAdmin(admin.ModelAdmin):
     pass
 
 

@@ -8,8 +8,8 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 5.1; rv:47.0) Gecko/20100101 F
            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9.*/*;q=0.8'}
 
 
-def work():
-    url = 'http://trudbox.by/minsk?whatQuery=python'
+def work(link):
+    url = link
     response = requests.get(url, headers=headers)
 
     jobs = []

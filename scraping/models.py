@@ -1,7 +1,12 @@
+import jsonfield
 from django.db import models
 
 
 # Create your models here.
+
+def default_urls():
+    return {'work': ''}
+
 
 class City(models.Model):
     name = models.CharField('City name', max_length=225, unique=True)
@@ -42,3 +47,15 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Url(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Url city')
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, verbose_name='Url language')
+    url_data = jsonfield.JSONField(default=default_urls)
+
+    class Meta:
+        unique_together = ('city', 'language',)
+
+    def __str__(self):
+        return '{0} - {1}'.format(self.city, self.language)
