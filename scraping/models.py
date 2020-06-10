@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 
 def default_urls():
-    return {'work': ''}
+    return {'trudbox': '', 'work': ''}
 
 
 class City(models.Model):
@@ -44,6 +44,7 @@ class Vacancy(models.Model):
     class Meta:
         verbose_name = 'Vacancy'
         verbose_name_plural = 'Vacancies'
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.title
@@ -59,3 +60,11 @@ class Url(models.Model):
 
     def __str__(self):
         return '{0} - {1}'.format(self.city, self.language)
+
+
+class Error(models.Model):
+    data = jsonfield.JSONField()
+    timestamp = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.timestamp

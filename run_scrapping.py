@@ -1,23 +1,25 @@
+from django.contrib.auth import get_user_model
+from django.db import DatabaseError
 import os
 import sys
 
-from django.contrib.auth import get_user_model
-
-project = os.path.dirname(os.path.abspath('manage.py'))
-sys.path.append(project)
+proj = os.path.dirname(os.path.abspath('manage.py'))
+sys.path.append(proj)
 os.environ["DJANGO_SETTINGS_MODULE"] = "scraping_service.settings"
 
 import django
 
 django.setup()
 
-from django.db import DatabaseError
-import scraping.work
-from scraping.models import Vacancy, City, Language, Url
+from scraping.parsers import *
+from scraping.models import City, Vacancy, Language, Error, Url
 
 User = get_user_model()
 
-urls = ('http://trudbox.by/minsk?whatQuery=python',)
+parsers = (
+    (trudbox, 'trudbox'),
+    (work, 'work'),
+)
 
 
 def get_info():
@@ -31,7 +33,7 @@ def get_urls(_info):
     url_dict = {(q['city_id'], q['language_id']): q['url_data'] for q in qs}
     urls = []
     for pair in _info:
-        tmp = {}
+        tmp = dict()
         tmp['city'] = pair[0]
         tmp['language'] = pair[1]
         tmp['url_data'] = url_dict[pair]
@@ -39,15 +41,25 @@ def get_urls(_info):
     return urls
 
 
-q = get_info()
-u = get_urls(q)
+info = get_info()
+url_list = get_urls(info)
 
-city = City.objects.filter(slug='minsk').first()
-language = Language.objects.filter(slug='python').first()
-jobs = scraping.work.work(urls[0])
+jobs, errors = [], []
+
+for data in url_list:
+
+    for func, key in parsers:
+        url = data['url_data'][key]
+        j, e = func(url, city=data['city'], language=data['language'])
+        jobs += j
+        errors += e
+
 for job in jobs:
-    v = Vacancy(**job, city=city, language=language)
+    v = Vacancy(**job)
     try:
         v.save()
     except DatabaseError:
         pass
+
+if errors:
+    err = Error(date=errors).save()

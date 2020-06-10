@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import City, Language, Vacancy, Url
+from .models import City, Language, Vacancy, Url, Error
 
 
 # Register your models here.
@@ -22,6 +22,11 @@ class VacancyAdmin(admin.ModelAdmin):
 
 @admin.register(Url)
 class UrlAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Error)
+class ErrorAdmin(admin.ModelAdmin):
     pass
 
 
