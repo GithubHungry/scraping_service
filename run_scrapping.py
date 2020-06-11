@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db import DatabaseError
 import os
 import sys
+import time
+import asyncio
 
 proj = os.path.dirname(os.path.abspath('manage.py'))
 sys.path.append(proj)
@@ -20,6 +22,8 @@ parsers = (
     (trudbox, 'trudbox'),
     (work, 'work'),
 )
+
+jobs, errors = [], []
 
 
 def get_info():
@@ -41,18 +45,35 @@ def get_urls(_info):
     return urls
 
 
+async def main(value):
+    func, url, city, language = value  # Unpack
+    job, err = await loop.run_in_executor(None, func, url, city, language)  # Start worker
+    errors.extend(err)  # Add results into list
+    jobs.extend(job)
+
+
 info = get_info()
 url_list = get_urls(info)
 
-jobs, errors = [], []
+start = time.time()
 
-for data in url_list:
+loop = asyncio.get_event_loop()  # Create loop
+tmp_tasks = [(func, data['url_data'][key], data['city'], data['language']) for data in url_list for func, key in
+             parsers]  # Create tasks list (pack)
+tasks = asyncio.wait([loop.create_task(main(f)) for f in tmp_tasks])  # Give args for workers
 
-    for func, key in parsers:
-        url = data['url_data'][key]
-        j, e = func(url, city=data['city'], language=data['language'])
-        jobs += j
-        errors += e
+# for data in url_list:
+#
+#     for func, key in parsers:
+#         url = data['url_data'][key]
+#         j, e = func(url, city=data['city'], language=data['language'])
+#         jobs += j
+#         errors += e
+
+loop.run_until_complete(tasks)
+loop.close()  # close loop
+
+print(time.time()-start)
 
 for job in jobs:
     v = Vacancy(**job)
