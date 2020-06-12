@@ -5,10 +5,18 @@
 
 
 {% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Сервис по сбору и рассылки вакансий</h2>
+        </div>
+    </div>
 
     <div class="row ">
         <div class="col-md-6 mx-auto">
-            <form action="" method="get">
+                <h4>
+                    Для просмотра доступных вакансий, заполните форму по одному из полей(город, технология)
+                </h4>
+            <form action="{% url 'list' %}" method="get">
                 <div class="form-group">
                     {{ form.as_p }}
                 </div>
@@ -16,23 +24,5 @@
             </form>
         </div>
     </div>
-
-    {% for vacancy in object_list %}
-
-        <div class="card my-3">
-            <h3 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h3>
-            <div class="card-body">
-                <h3 class="card-title">{{ vacancy.company }}</h3>
-                <p class="card-text">
-                <p>{{ vacancy.description }}</p>
-                <p>{{ vacancy.city.name }} | {{ vacancy.language.name }}</p>
-                <p>{{ vacancy.timestamp |date:'D d M Y' }}</p>
-                <a href="{{ vacancy.url }}" class="btn btn-primary">Go to the site</a>
-            </div>
-        </div>
-
-    {% empty %}
-            <h3 class="my-4 text-center">There are no actual vacancies here.</h3>
-    {% endfor %}
 
 {% endblock content %}

@@ -7,6 +7,12 @@ from .forms import SearchForm
 # Create your views here.
 def index(request):
     form = SearchForm()
+
+    return render(request, 'scraping/index.html', {'form': form})
+
+
+def list_view(request):
+    form = SearchForm()
     city = request.GET.get('city')
     language = request.GET.get('language')
     vacancies = []
@@ -19,4 +25,5 @@ def index(request):
 
         vacancies = Vacancy.objects.filter(**_filter)
 
-    return render(request, 'scraping/index.html', {'object_list': vacancies, 'form': form})
+    return render(request, 'scraping/list.html', {'object_list': vacancies, 'form': form})
+
