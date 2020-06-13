@@ -17,7 +17,6 @@ def list_view(request):
     city = request.GET.get('city')
     language = request.GET.get('language')
     page_obj = []
-
     context = {'city': city, 'language': language, 'form': form}
 
     if city or language:
@@ -31,6 +30,6 @@ def list_view(request):
         paginator = Paginator(vacancies, 10)  # Show 25 contacts per page.
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
-        context['object_list'] = page_obj
+    context['object_list'] = page_obj
 
     return render(request, 'scraping/list.html', context)
