@@ -53,3 +53,7 @@ class UserUpdateForm(forms.Form):
     class Meta:
         model = User
         fields = ('city', 'language', 'is_subscribed')
+
+
+class ContactForm(forms.Form):
+    pass

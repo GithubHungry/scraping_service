@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import DatabaseError
+import datetime as dt
 import os
 import sys
 import time
@@ -74,7 +75,7 @@ tasks = asyncio.wait([loop.create_task(main(f)) for f in tmp_tasks])  # Give arg
 loop.run_until_complete(tasks)
 loop.close()  # close loop
 
-print(time.time()-start)
+print(time.time() - start)
 
 for job in jobs:
     v = Vacancy(**job)
@@ -84,4 +85,10 @@ for job in jobs:
         pass
 
 if errors:
-    err = Error(date=errors).save()
+    qs = Error.objects.filter(timestamp=dt.date.today())
+    if qs.exists():
+        err = qs.first()
+        err.data.update({'errors': errors})
+        err.save()
+    else:
+        er = Error(data=f'errors:{errors}').save()
