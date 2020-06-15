@@ -12,7 +12,7 @@ os.environ["DJANGO_SETTINGS_MODULE"] = "scraping_service.settings"
 
 django.setup()
 
-from scraping.models import Vacancy, Error
+from scraping.models import Vacancy, Error, Url
 from scraping_service.settings import EMAIL_HOST_USER
 
 ADMIN_USER = EMAIL_HOST_USER
@@ -59,17 +59,32 @@ if users_dict:
             msg.send()
 
 qs = Error.objects.filter(timestamp=today)
+subject = ''
+text_content = ''
+to = ADMIN_USER
+content = ''
+
 if qs.exists():
     error = qs.first()
     data = error.data
-    content = ''
     for i in data:
         content += '<p><a href="{0}"> Error: {1} </a></p>'.format(i['url'], i['title'])
-
     subject = 'Scraping errors {0}'.format(today)
     text_content = 'Scraping errors {0}'.format(today)
-    to = ADMIN_USER
 
+qs = Url.objects.all().values('city', 'language')
+urls_dict = {(i['city'], i['language']): True for i in qs}
+
+urls_err = ''
+
+for keys in users_dict.keys():
+    if keys not in urls_dict:
+        urls_err += '<p>For city: {0} and language: {1} there are no urls!</p><br>'.format(keys[0], keys[1])
+if urls_err:
+    subject += 'Missing urls'
+    content += urls_err
+
+if subject:
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(content, "text/html")
     msg.send()
