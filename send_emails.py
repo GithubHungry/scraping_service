@@ -66,11 +66,20 @@ content = ''
 
 if qs.exists():
     error = qs.first()
-    data = error.data
+    data = error.data['errors']
     for i in data:
         content += '<p><a href="{0}"> Error: {1} </a></p>'.format(i['url'], i['title'])
     subject = 'Scraping errors {0}'.format(today)
     text_content = 'Scraping errors {0}'.format(today)
+
+    data = error.data['user_data']
+    if data:
+        content += '<hr>'
+        content += '<h2>Users wishes</h2>'
+        for i in data:
+            content += '<p>City: {0}, language: {1}, email: {2}</p>'.format(i['city'], i['language'], i['email'])
+        subject = 'Users wishes {0}'.format(today)
+        text_content = 'Users wishes {0}'.format(today)
 
 qs = Url.objects.all().values('city', 'language')
 urls_dict = {(i['city'], i['language']): True for i in qs}
@@ -79,7 +88,8 @@ urls_err = ''
 
 for keys in users_dict.keys():
     if keys not in urls_dict:
-        urls_err += '<p>For city: {0} and language: {1} there are no urls!</p><br>'.format(keys[0], keys[1])
+        if keys[0] and keys[1]:
+            urls_err += '<p>For city: {0} and language: {1} there are no urls!</p><br>'.format(keys[0], keys[1])
 if urls_err:
     subject += 'Missing urls'
     content += urls_err

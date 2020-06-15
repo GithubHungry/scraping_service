@@ -25,4 +25,23 @@
         </div>
     </div>
 
+    <div class="row my-5">
+        <div class="col-md-8 mx-auto">
+            <p class="text-center my-2">
+                You can fill city and language if you want new vacancies. You`ll be notified by email.
+            </p>
+            <form action="{% url 'contact' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ contact_form.as_p }}
+                </div>
+                <button type="submit" class="btn btn-primary">Send!</button>
+            </form>
+
+        </div>
+    </div>
+
+
+
+
 {% endblock content %}
