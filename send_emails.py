@@ -66,13 +66,13 @@ content = ''
 
 if qs.exists():
     error = qs.first()
-    data = error.data['errors']
+    data = error.data.get('errors', [])
     for i in data:
         content += '<p><a href="{0}"> Error: {1} </a></p>'.format(i['url'], i['title'])
     subject = 'Scraping errors {0}'.format(today)
     text_content = 'Scraping errors {0}'.format(today)
 
-    data = error.data['user_data']
+    data = error.data.get('user_data')
     if data:
         content += '<hr>'
         content += '<h2>Users wishes</h2>'
