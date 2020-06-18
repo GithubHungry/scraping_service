@@ -35,14 +35,14 @@
         <h3 class="my-4 text-center">There are no actual vacancies here.</h3>
     {% endfor %}
 
-    {% if object_list %}
+    {% if page_obj %}
         <div class="row">
             <div class="col">
 
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        {% if object_list.has_previous %}
+                        {% if page_obj.has_previous %}
 
                             <li class="page-item">
                                 <a class="page-link" href="?city={{ city }}&language={{ language }}&page=1"
@@ -53,20 +53,20 @@
 
                         {% endif %}
 
-                        {% for page in object_list.paginator.page_range %}
+                        {% for page in page_obj.paginator.page_range %}
 
-                            <li class="page-item {% if page == object_list.number %} active {% endif %}">
+                            <li class="page-item {% if page == page_obj.number %} active {% endif %}">
                                 <a class="page-link"
                                    href="?city={{ city }}&language={{ language }}&page={{ page }}">{{ page }}</a>
                             </li>
 
                         {% endfor %}
 
-                        {% if object_list.has_next %}
+                        {% if page_obj.has_next %}
 
                             <li class="page-item">
                                 <a class="page-link"
-                                   href="?city={{ city }}&language={{ language }}&page={{ object_list.next_page_number }}"
+                                   href="?city={{ city }}&language={{ language }}&page={{ page_obj.next_page_number }}"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
@@ -98,5 +98,6 @@
             </div>
         </div>
     {% endif %}
+
 
 {% endblock content %}

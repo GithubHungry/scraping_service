@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Current vacancy
+{% endblock title %}
+
+
+{% block content %}
+
+    <div class="card my-3">
+        <h3 class="card-header"><a href="{{ object.url }}">{{ object.title }}</a></h3>
+        <div class="card-body">
+            <h3 class="card-title">{{ object.company }}</h3>
+            <p class="card-text">
+            <p>{{ object.description }}</p>
+            <p>{{ object.city.name }} | {{ object.language.name }}</p>
+            <p>{{ object.timestamp |date:'D d M Y' }}</p>
+        </div>
+    </div>
+
+{% endblock content %}
