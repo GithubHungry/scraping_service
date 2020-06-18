@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .models import Vacancy
 from .forms import SearchForm
@@ -73,3 +75,10 @@ class VacancyList(ListView):
                 _filter['language__slug'] = language
             vacancies = Vacancy.objects.filter(**_filter)
         return vacancies
+
+
+class VacancyCreate(CreateView):
+    model = Vacancy
+    fields = '__all__'
+    template_name = 'scraping/create.html'
+    success_url = reverse_lazy('index')
