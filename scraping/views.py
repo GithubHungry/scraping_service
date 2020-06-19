@@ -5,7 +5,7 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .models import Vacancy
-from .forms import SearchForm
+from .forms import SearchForm, VacancyForm
 
 
 # Create your views here.
@@ -79,6 +79,13 @@ class VacancyList(ListView):
 
 class VacancyCreate(CreateView):
     model = Vacancy
-    fields = '__all__'
+    form_class = VacancyForm
+    template_name = 'scraping/create.html'
+    success_url = reverse_lazy('index')
+
+
+class VacancyUpdate(UpdateView):
+    model = Vacancy
+    form_class = VacancyForm
     template_name = 'scraping/create.html'
     success_url = reverse_lazy('index')
