@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
@@ -89,3 +90,13 @@ class VacancyUpdate(UpdateView):
     form_class = VacancyForm
     template_name = 'scraping/create.html'
     success_url = reverse_lazy('index')
+
+
+class VacancyDelete(DeleteView):
+    model = Vacancy
+    # template_name = 'scraping/delete.html'
+    success_url = reverse_lazy('index')
+
+    def get(self, request, *args, **kwargs):
+        messages.success(request, 'We delete vacancy successfully!')
+        return self.post(request, *args, **kwargs)
