@@ -12,7 +12,6 @@ from .forms import SearchForm, VacancyForm
 # Create your views here.
 def index(request):
     form = SearchForm()
-
     return render(request, 'scraping/index.html', {'form': form})
 
 
@@ -30,7 +29,7 @@ def index(request):
 #         if language:
 #             _filter['language__slug'] = language
 #
-#         vacancies = Vacancy.objects.filter(**_filter)
+#         vacancies = Vacancy.objects.filter(**_filter).select_related('city', 'language')
 #         paginator = Paginator(vacancies, 10)  # Show 25 contacts per page.
 #         page_number = request.GET.get('page')
 #         page_obj = paginator.get_page(page_number)
@@ -74,7 +73,7 @@ class VacancyList(ListView):
                 _filter['city__slug'] = city
             if language:
                 _filter['language__slug'] = language
-            vacancies = Vacancy.objects.filter(**_filter)
+            vacancies = Vacancy.objects.filter(**_filter).select_related('city', 'language')
         return vacancies
 
 
@@ -98,5 +97,5 @@ class VacancyDelete(DeleteView):
     success_url = reverse_lazy('index')
 
     def get(self, request, *args, **kwargs):
-        messages.success(request, 'We delete vacancy successfully!')
+        messages.success(request, 'We deleted vacancy successfully!')
         return self.post(request, *args, **kwargs)

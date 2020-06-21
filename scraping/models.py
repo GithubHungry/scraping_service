@@ -36,7 +36,7 @@ class Vacancy(models.Model):
     title = models.CharField('Vacancy title', max_length=250)
     company = models.CharField('Vacancy company', max_length=250)
     description = models.TextField('Vacancy description')
-    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Vacancy city')
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='Vacancy city', related_name='vacancies')
     language = models.ForeignKey(Language, on_delete=models.CASCADE, verbose_name='Vacancy language')
     timestamp = models.DateField(auto_now_add=True)
     url = models.URLField('Vacancy url', unique=True)
